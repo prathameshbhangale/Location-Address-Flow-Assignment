@@ -39,7 +39,7 @@ export const login = async (req, res) => {
     const token = generateToken({ userId: user._id, email: user.email });
     res.setHeader('Authorization', `Bearer ${token}`);
 
-    res.status(201).json({success:true, token, message: 'Login successful' });
+    res.status(201).json({success:true, token, message: 'Login successful',user });
   } catch (err) {
     res.status(500).json({success:false, message: 'Server error', error: err.message });
   }

@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import { login } from "../apis/auth/login";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setName, setToken } from "../slices/userSlice";
 
 const Login = () => {
   let initial = {
     email: "",
     password: "",
   }
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState(initial);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -35,6 +38,8 @@ const Login = () => {
       const response = await login(email,password)
       console.log(response);
       if (response?.success) {
+        dispatch(setToken(response.token))
+        dispatch(setName(response.user.name))
         toast.success("login successful! Redirecting to home Page.");
       }
       else{

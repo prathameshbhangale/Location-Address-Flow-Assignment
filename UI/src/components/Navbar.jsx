@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch} from "react-redux";
 import { FaUserCircle } from "react-icons/fa";
+import { getLocation } from "../helper/locationPermission";
 
 const Navbar = () => {
   const token = useSelector((state) => state.user.token);
+  const dispatch = useDispatch();
+  getLocation(dispatch)
   console.log(token);
 
   return (
