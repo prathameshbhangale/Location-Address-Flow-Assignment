@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { setCoordinates } from "../slices/locationSlice"; 
+import { setCoordinates, setPermission } from "../slices/locationSlice"; 
 
 export const getLocation = (dispatch) => {
   if (navigator.geolocation) {
@@ -14,17 +14,18 @@ export const getLocation = (dispatch) => {
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,
                 })
-              );
-            //   toast.success("Location retrieved successfully!");
+            );
+                dispatch(setPermission(true))
+              toast.success("default Location set as curremt location");
             },
             (err) => {
-            //   toast.error(`Failed to get location: ${err.message}`);
+              toast.error(`Failed set default Location set as curremt location ${err.message}`);
             }
           );
         } else if (result.state === "denied") {
-        //   toast.error(
-        //     "Location permission denied. Please enable it in browser settings for all features."
-        //   );
+          toast.error(
+            "Location permission denied."
+          );
         }
       })
       .catch((err) => {

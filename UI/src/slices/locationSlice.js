@@ -7,6 +7,7 @@ const initialState = {
   street: '',
   category: 'not defined', // Enum: ['Home', 'Office', 'Friends & Family', 'not defined']
   isFavorite: false,
+  ispermission: false,
 };
 
 const locationSlice = createSlice({
@@ -22,6 +23,10 @@ const locationSlice = createSlice({
     setHouseNumber: (state, action) => {
       state.houseNumber = action.payload;
     },
+    setPermission: (state, action) => {
+      console.log(action.payload)
+        state.ispermission = action.payload;
+      },
     // Set the street
     setStreet: (state, action) => {
       state.street = action.payload;
@@ -49,6 +54,7 @@ export const {
   setCategory,
   toggleFavorite,
   resetLocation,
+  setPermission,
 } = locationSlice.actions;
 
 export default locationSlice.reducer;
