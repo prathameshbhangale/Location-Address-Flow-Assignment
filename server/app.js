@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN || '*', // You can restrict to specific domains here
+    origin: '*', // You can restrict to specific domains here
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };

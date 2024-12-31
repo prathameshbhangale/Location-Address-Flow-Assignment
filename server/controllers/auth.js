@@ -8,7 +8,7 @@ export const register = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ success:false, message: 'User already exists' });
     }
 
     const hashedPassword = await hashPassword(password);
@@ -16,9 +16,9 @@ export const register = async (req, res) => {
     const newUser = new User({ name, email, passwordHash: hashedPassword });
     await newUser.save();
 
-    res.status(201).json({ message: 'User registered successfully' });
+    res.status(201).json({ success:true, message: 'User registered successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ success:false, message: 'Server error', error: err.message });
   }
 };
 
@@ -28,19 +28,19 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: 'Invalid email or password' });
+      return res.status(404).json({success:false, message: 'Invalid email or password' });
     }
 
     const isMatch = await comparePassword(password, user.passwordHash);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({success:false, message: 'Invalid email or password' });
     }
 
     const token = generateToken({ userId: user._id, email: user.email });
     res.setHeader('Authorization', `Bearer ${token}`);
 
-    res.status(201).json({ token, message: 'Login successful' });
+    res.status(201).json({success:true, token, message: 'Login successful' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({success:false, message: 'Server error', error: err.message });
   }
 };
