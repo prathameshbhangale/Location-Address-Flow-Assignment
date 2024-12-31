@@ -4,7 +4,7 @@ import { login } from "../apis/auth/login";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setName, setToken } from "../slices/userSlice";
+import { setName, setToken, setEmail } from "../slices/userSlice";
 
 const Login = () => {
   let initial = {
@@ -40,6 +40,7 @@ const Login = () => {
       if (response?.success) {
         dispatch(setToken(response.token))
         dispatch(setName(response.user.name))
+        dispatch(setEmail(response.user.email))
         toast.success("login successful! Redirecting to home Page.");
       }
       else{

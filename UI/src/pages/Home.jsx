@@ -1,50 +1,27 @@
-import React, { useEffect, useRef } from "react";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
-import { useSelector } from "react-redux";
-
-const containerStyle = {
-  width: "100%",
-  height: "500px",
-};
+import React from "react";
+import MapComponent from "../components/MapComponent"; 
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
-
-    let defaultCenter = {
-        lat: useSelector((state) => state.location.latitude),
-        lng: useSelector((state) => state.location.longitude), 
-    };
-    let permission = useSelector((state)=>state.location.ispermission)
-    console.log(permission)
-    if(!(defaultCenter.lng && defaultCenter.lat)){
-        defaultCenter.lng =73.8567;
-        defaultCenter.lat =18.5204;
-    }
-
-  const apiKey = import.meta.env.VITE_API_GOOGLE_MAP_API_KEY;
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: apiKey, // Your API key
-  });
-
-
-  if (!isLoaded) {
-    return <div className="text-center mt-10 text-orange-500">Loading Map...</div>;
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold text-orange-600 mb-4">Welcome to the Map</h1>
-      <div className="shadow-lg h-5/6 w-5/6 rounded-lg overflow-hidden border border-gray-200">
-        <GoogleMap
-          
-          mapContainerStyle={containerStyle}
-          center={defaultCenter}
-          zoom={12}
-        >
-            {permission && <Marker position={defaultCenter} />}
-            
-        </GoogleMap>
-      </div>
+    <div className=" flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      
+      <header className="text-center m-8">
+        <h1 className="text-4xl font-bold text-gray-800">Welcome to the Home Page</h1>
+      </header>
+
+      <main className="bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl">
+        {/* Display the map with location and search enabled */}
+        <MapComponent enableSearch={true} />
+      </main>
+
+      <Link
+        to="/add-address"
+        className="w-32 mt-4 h-12 flex items-center justify-center px-4 py-2 bg-green-500 text-white font-medium text-lg rounded-full shadow-md hover:bg-green-600 focus:ring-2 focus:ring-green-300 focus:outline-none transition duration-200"
+      >
+        Proceed
+      </Link>
+
     </div>
   );
 };

@@ -18,6 +18,10 @@ const addressSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  address: {
+    type: String,
+    required: false,
+  },
   street: {
     type: String,
     required: true,

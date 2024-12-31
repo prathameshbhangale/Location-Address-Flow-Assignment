@@ -16,10 +16,10 @@ export const getLocation = (dispatch) => {
                 })
             );
                 dispatch(setPermission(true))
-              toast.success("default Location set as curremt location");
+                toast.success("Location set as current location");
             },
             (err) => {
-              toast.error(`Failed set default Location set as curremt location ${err.message}`);
+              toast.error(`Failed set Location set as curremt location ${err.message}`);
             }
           );
         } else if (result.state === "denied") {
