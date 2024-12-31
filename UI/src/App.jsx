@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import toast, { Toaster } from 'react-hot-toast';
 import HomePage from './pages/Home';
 import AddressForm from './pages/AddAddress';
+import AddDashboard from './components/AddDashboard';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route element={<Navbar />}>
         <Route path='/' element={<HomePage/>}>  </Route>
         <Route path='/add-address' element={<AddressForm/>}>  </Route>
+        <Route path='/address' element={<AddDashboard/>}>  </Route>
       </Route>
 
 

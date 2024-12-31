@@ -3,7 +3,7 @@ import Address from '../models/Address.js';
 export const addAddress = async (req, res) => {
     try {
         const { userId } = req.user;
-        const { latitude, longitude,houseNumber, isFavorite=false, street, address, category = 'not defined' } = req.body;
+        const { latitude, longitude,houseNumber, isFavorite=false, street, address, category = 'other' } = req.body;
 
         if (!latitude || !longitude || !street || !houseNumber) {
             return res.status(400).json({

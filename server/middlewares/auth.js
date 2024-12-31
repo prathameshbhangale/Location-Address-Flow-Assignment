@@ -4,7 +4,7 @@ export const auth = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Authorization token required' });
+    return res.status(401).json({ success:false, message: 'Authorization token required' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -14,6 +14,6 @@ export const auth = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Invalid or expired token' });
+    res.status(401).json({success:false, message: 'Invalid or expired token' });
   }
 };

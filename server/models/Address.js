@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// Address ( userid, latitude , longitude, houseNumber, address, street, category, isFavorite)
+// category is enum of ['Home', 'Office', 'Friends & Family', 'other']
 const addressSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -28,8 +30,8 @@ const addressSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['Home', 'Office', 'Friends & Family', 'not defined'],
-    default: 'not defined',
+    enum: ['Home', 'Office', 'Friends & Family', 'other'],
+    default: 'other',
   },
   isFavorite: {
     type: Boolean,
