@@ -6,8 +6,8 @@ import Login from './pages/Login';
 import toast, { Toaster } from 'react-hot-toast';
 import HomePage from './pages/Home';
 import AddressForm from './pages/AddAddress';
-import AddDashboard from './components/AddDashboard';
-
+import AddressList from './components/addresses';
+import AddDashboard from './pages/AddDashboard';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -20,7 +20,9 @@ function App() {
       <Route element={<Navbar />}>
         <Route path='/' element={<HomePage/>}>  </Route>
         <Route path='/add-address' element={<AddressForm/>}>  </Route>
-        <Route path='/address' element={<AddDashboard/>}>  </Route>
+        <Route path='/' element={<AddDashboard/>}> 
+          <Route path='/address' element={<AddressList/>}>  </Route>
+        </Route>
       </Route>
 
 

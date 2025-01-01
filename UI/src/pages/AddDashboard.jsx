@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { getAddress } from "../apis/address/filter";
+import { useSelector , useDispatch} from "react-redux";
+import { setAddresses } from "../slices/dashboard";
 
 function AddDashboard() {
   const [filters, setFilters] = useState({
@@ -7,7 +10,12 @@ function AddDashboard() {
     office: false,
     friends: false,
     favourites: false,
+    other: false,
   });
+  const dispatch = useDispatch()
+
+  const [loading, setLoading] = useState(false); // Add loading state
+  const token = useSelector((state) => state.user.token);
 
   const handleFilterChange = (filterName) => {
     setFilters((prevFilters) => ({
@@ -16,11 +24,32 @@ function AddDashboard() {
     }));
   };
 
-  const handleFindClick = () => {
-    // Logic for handling the search based on selected filters
+  const handleFindClick = async () => {
+    if (!token) {
+      console.error("Token not available");
+      return;
+    }
     console.log("Selected Filters:", filters);
-    // You can integrate this with a backend or use it to filter content dynamically
+    setLoading(true); // Set loading state
+
+    try {
+      const response = await getAddress(filters, token);
+      if(response?.success){
+        if (response?.data && Array.isArray(response.data)) {
+          console.log("Data is an array:", response.data);
+        } else {
+          console.log("Data is not an array or is undefined");
+        }
+        dispatch(setAddresses(response.data));
+      }
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+    } finally {
+      setLoading(false); // Reset loading state
+    }
   };
+
+  const isButtonDisabled = Object.values(filters).every((value) => !value); // Disable button if no filters
 
   return (
     <div className="flex h-screen">
@@ -62,6 +91,15 @@ function AddDashboard() {
               <label className="flex items-center space-x-3">
                 <input
                   type="checkbox"
+                  checked={filters.other}
+                  onChange={() => handleFilterChange("other")}
+                  className="form-checkbox h-4 w-4 text-green-500"
+                />
+                <span>Other</span>
+              </label>
+              <label className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
                   checked={filters.favourites}
                   onChange={() => handleFilterChange("favourites")}
                   className="form-checkbox h-4 w-4 text-green-500"
@@ -74,9 +112,14 @@ function AddDashboard() {
           {/* Find Button */}
           <button
             onClick={handleFindClick}
-            className="mt-6 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
+            disabled={isButtonDisabled || loading}
+            className={`mt-6 w-full py-2 rounded text-white ${
+              isButtonDisabled || loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
           >
-            Find
+            {loading ? "Finding..." : "Find"}
           </button>
         </nav>
       </div>
