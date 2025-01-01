@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateAddress } from "../slices/dashboard";
+import { setAddresses, updateAddress } from "../slices/dashboard";
 import { updateAddress as updateAddressApi } from "../apis/address/update";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const EditAddressPopup = ({ address, onClose }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = useSelector((state) => state.user.token);
 
   const [formValues, setFormValues] = useState(address);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -37,6 +42,8 @@ const EditAddressPopup = ({ address, onClose }) => {
         dispatch(updateAddress(addressId, updatedAddress));
         toast.success("Address updated successfully");
         onClose(); // Close the popup
+        dispatch(setAddresses([]))
+        navigate("/address"); // Navigate to /address
       } else {
         toast.error("Failed to update address");
       }
@@ -51,26 +58,6 @@ const EditAddressPopup = ({ address, onClose }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h3 className="text-xl font-bold mb-4">Edit Address</h3>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Latitude</label>
-            <input
-              type="text"
-              name="latitude"
-              value={formValues.latitude}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Longitude</label>
-            <input
-              type="text"
-              name="longitude"
-              value={formValues.longitude}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
-            />
-          </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">House Number</label>
             <input
@@ -104,6 +91,16 @@ const EditAddressPopup = ({ address, onClose }) => {
               <option value="Friends & Family">Friends & Family</option>
               <option value="other">Other</option>
             </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Mark as Favorite</label>
+            <input
+              type="checkbox"
+              name="isFavorite"
+              checked={formValues.isFavorite || false}
+              onChange={handleChange}
+              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
           </div>
           <div className="flex justify-end space-x-2">
             <button

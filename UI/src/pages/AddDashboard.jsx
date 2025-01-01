@@ -3,8 +3,11 @@ import { Outlet } from "react-router-dom";
 import { getAddress } from "../apis/address/filter";
 import { useSelector , useDispatch} from "react-redux";
 import { setAddresses } from "../slices/dashboard";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function AddDashboard() {
+  const navigate = useNavigate()
   const [filters, setFilters] = useState({
     home: false,
     office: false,
@@ -27,6 +30,8 @@ function AddDashboard() {
   const handleFindClick = async () => {
     if (!token) {
       console.error("Token not available");
+      toast.error("please login")
+      navigate('/login')
       return;
     }
     console.log("Selected Filters:", filters);

@@ -32,9 +32,10 @@ const AddressForm = () => {
       const response = await addAddress(body, token);
       if (response?.success) {
         toast.success("Address added successfully!");
-        navigate("/");  // Redirect to home or desired page
+        navigate("/");  
       } else {
         toast.error("Failed to add address.");
+        navigate("/login")
       }
     } catch (error) {
       toast.error("An error occurred while saving the address.");
